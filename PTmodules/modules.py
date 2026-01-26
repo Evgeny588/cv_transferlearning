@@ -39,8 +39,22 @@ val_transforms = Compose([
         [0.229, 0.224, 0.225]), 
 ])
 
-# Model init
+# Model and classifier init
 model = torchvision.models.resnet50()
+model.fc = nn.Sequential(
+    nn.Dropout(0.3),
+    nn.Linear(
+        in_features = model.fc.in_features,
+        out_features = 1024
+    ),
+    nn.ReLU(),
+    nn.Linear(
+        in_features = 1024,
+        out_features = 2
+    )
+) # Instead standard classifier (fc layer) to
+  # Dropout -> Regressor (Linear + ReLU) -> Out Linear
+
 
 # Create Dataset
 class ImageDataset(Dataset):
