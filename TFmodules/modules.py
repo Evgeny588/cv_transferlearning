@@ -5,6 +5,7 @@ import keras
 import tensorflow as tf
 from pathlib import Path
 from tqdm.auto import tqdm
+from keras.preprocessing import image
 
 root_path = Path(__file__).resolve().parent.parent
 filename = Path(__file__).stem
@@ -43,7 +44,7 @@ head = keras.Model(
 class ResNet50_with_classifier(keras.Model):
     def __init__(self, conv_base, classifier):
         self.conv_base = conv_base
-        self.head = classifier
+        self.classifier = classifier
         logger.debug('Full ResNet initialized') 
 
 
@@ -52,3 +53,4 @@ class ResNet50_with_classifier(keras.Model):
         output = self.classifier(conv_outs, training = training)
         return output # Raw logits. Shape = (batch_size, 2)
     
+
